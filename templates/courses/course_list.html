@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>All Courses</h2>
+        <a href="{% url 'course_create' %}" class="btn btn-primary">+ Create Course</a>
+    </div>
+
+    {% if courses %}
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Title</th>
+                <th>Duration</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Seats</th>
+                <th>Visible</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in courses %}
+            <tr>
+                <td>{{ course.title }}</td>
+                <td>{{ course.duration }}</td>
+                <td>{{ course.start_date }}</td>
+                <td>{{ course.end_date }}</td>
+                <td>{{ course.seats_available }} / {{ course.total_seats }}</td>
+                <td>
+                    <a href="{% url 'course_toggle_visibility' course.pk %}">
+                        {% if course.is_visible %}
+                            <span class="badge bg-success">Visible</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Hidden</span>
+                        {% endif %}
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'course_toggle_closed' course.pk %}">
+                        {% if course.is_closed %}
+                            <span class="badge bg-danger">Closed</span>
+                        {% else %}
+                            <span class="badge bg-success">Open</span>
+                        {% endif %}
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'course_edit' course.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="{% url 'course_delete' course.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>No courses yet. <a href="{% url 'course_create' %}">Create one!</a></p>
+    {% endif %}
+</div>
+{% endblock %}
