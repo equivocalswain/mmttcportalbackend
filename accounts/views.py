@@ -23,7 +23,9 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            if user.is_admin_user():
+            # Safe check — works for both CustomUser and superuser
+            role = getattr(user, 'role', None)
+            if role == 'admin' or user.is_superuser:
                 return redirect('admin_dashboard')
             return redirect('applicant_dashboard')
         else:
