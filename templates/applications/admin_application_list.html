@@ -34,13 +34,16 @@
                 <td>{{ app.institution }}</td>
                 <td>{{ app.submitted_at|date:"d M Y" }}</td>
                 <td>
-                    {% if app.status == 'pending' %}
-                        <span class="badge bg-warning text-dark">Pending</span>
-                    {% elif app.status == 'approved' %}
-                        <span class="badge bg-success">Approved</span>
-                    {% elif app.status == 'rejected' %}
-                        <span class="badge bg-danger">Rejected</span>
-                    {% endif %}
+                   <td>
+    <a href="{% url 'admin_application_detail' app.pk %}" class="btn btn-sm btn-info">View</a>
+    {% if app.status == 'approved' %}
+        {% if app.certificate %}
+            <a href="{% url 'download_certificate' app.certificate.pk %}" class="btn btn-sm btn-success">Download Cert</a>
+        {% else %}
+            <a href="{% url 'generate_certificate' app.pk %}" class="btn btn-sm btn-warning">Generate Cert</a>
+        {% endif %}
+    {% endif %}
+</td>
                 </td>
                 <td>
                     <a href="{% url 'admin_application_detail' app.pk %}" class="btn btn-sm btn-info">View</a>
