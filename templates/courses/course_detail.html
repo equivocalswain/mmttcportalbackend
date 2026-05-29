@@ -33,14 +33,14 @@
                     <p>{{ course.description }}</p>
                     <hr>
                     {% if request.user.is_authenticated %}
-                        <button class="btn btn-success w-100" disabled>
-                            Apply Now (Coming Soon)
-                        </button>
-                    {% else %}
-                        <a href="{% url 'login' %}" class="btn btn-warning w-100">
-                            Login to Apply
-                        </a>
-                    {% endif %}
+    <a href="{% url 'apply_course' course.pk %}" class="btn btn-success w-100">
+        Apply Now
+    </a>
+{% else %}
+    <a href="{% url 'login' %}" class="btn btn-warning w-100">
+        Login to Apply
+    </a>
+{% endif %}
                     <a href="{% url 'applicant_course_list' %}" class="btn btn-secondary w-100 mt-2">
                         Back to Courses
                     </a>
