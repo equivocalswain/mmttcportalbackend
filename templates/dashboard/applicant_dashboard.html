@@ -1,10 +1,63 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container mt-5">
-    <h2>Welcome, {{ request.user.username }}!</h2>
-    <p>Browse available courses and track your applications.</p>
-    <a href="{% url 'applicant_course_list' %}" class="btn btn-primary">Browse Courses</a>
-    <a href="{% url 'my_applications' %}" class="btn btn-info ms-2">My Applications</a>
-    <a href="{% url 'logout' %}" class="btn btn-danger ms-2">Logout</a>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Welcome, {{ request.user.username }}! 👋</h2>
+        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+    </div>
+
+    <!-- Stats -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card shadow text-center border-primary">
+                <div class="card-body">
+                    <h1 class="text-primary">{{ total }}</h1>
+                    <p class="text-muted mb-0">Total Applied</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card shadow text-center border-warning">
+                <div class="card-body">
+                    <h1 class="text-warning">{{ pending }}</h1>
+                    <p class="text-muted mb-0">Pending</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card shadow text-center border-success">
+                <div class="card-body">
+                    <h1 class="text-success">{{ approved }}</h1>
+                    <p class="text-muted mb-0">Approved</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card shadow text-center border-danger">
+                <div class="card-body">
+                    <h1 class="text-danger">{{ rejected }}</h1>
+                    <p class="text-muted mb-0">Rejected</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <div class="card shadow text-center p-3">
+                <h5>Browse Courses</h5>
+                <p class="text-muted">Find and apply for available courses</p>
+                <a href="{% url 'applicant_course_list' %}" class="btn btn-primary">Browse Courses</a>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card shadow text-center p-3">
+                <h5>My Applications</h5>
+                <p class="text-muted">Track your application status</p>
+                <a href="{% url 'my_applications' %}" class="btn btn-info">View Applications</a>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
