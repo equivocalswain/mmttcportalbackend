@@ -8,4 +8,6 @@ urlpatterns = [
     path('delete/<int:pk>/', views.course_delete, name='course_delete'),
     path('toggle-visibility/<int:pk>/', views.course_toggle_visibility, name='course_toggle_visibility'),
     path('toggle-closed/<int:pk>/', views.course_toggle_closed, name='course_toggle_closed'),
+    path('available/', views.applicant_course_list, name='applicant_course_list'),    # new
+    path('detail/<int:pk>/', views.course_detail, name='course_detail'),              # new
 ]

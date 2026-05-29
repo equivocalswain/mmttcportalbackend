@@ -51,3 +51,10 @@ def course_toggle_closed(request, pk):
     course.is_closed = not course.is_closed
     course.save()
     return redirect('course_list')
+def applicant_course_list(request):
+    courses = Course.objects.filter(is_visible=True, is_closed=False)
+    return render(request, 'courses/applicant_course_list.html', {'courses': courses})
+
+def course_detail(request, pk):
+    course = get_object_or_404(Course, pk=pk)
+    return render(request, 'courses/course_detail.html', {'course': course})

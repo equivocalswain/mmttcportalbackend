@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <h2>{{ course.title }}</h2>
+                    <hr>
+                    <table class="table table-borderless">
+                        <tr>
+                            <td><strong>Duration</strong></td>
+                            <td>{{ course.duration }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Start Date</strong></td>
+                            <td>{{ course.start_date }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>End Date</strong></td>
+                            <td>{{ course.end_date }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Seats Available</strong></td>
+                            <td>{{ course.seats_available }} / {{ course.total_seats }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Eligibility</strong></td>
+                            <td>{{ course.eligibility }}</td>
+                        </tr>
+                    </table>
+                    <h5>About this Course</h5>
+                    <p>{{ course.description }}</p>
+                    <hr>
+                    {% if request.user.is_authenticated %}
+                        <button class="btn btn-success w-100" disabled>
+                            Apply Now (Coming Soon)
+                        </button>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-warning w-100">
+                            Login to Apply
+                        </a>
+                    {% endif %}
+                    <a href="{% url 'applicant_course_list' %}" class="btn btn-secondary w-100 mt-2">
+                        Back to Courses
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
