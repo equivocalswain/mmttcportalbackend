@@ -2,7 +2,29 @@
 {% block content %}
 <div class="container mt-5">
     <h2>Welcome, Admin {{ request.user.username }}!</h2>
-    <p>This is your admin dashboard.</p>
-    <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+    <hr>
+    <div class="row mt-4">
+        <div class="col-md-4 mb-3">
+            <div class="card shadow text-center p-3">
+                <h5>Manage Courses</h5>
+                <p class="text-muted">Create, edit and manage courses</p>
+                <a href="{% url 'course_list' %}" class="btn btn-primary">Go to Courses</a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card shadow text-center p-3">
+                <h5>Applications</h5>
+                <p class="text-muted">View and approve applications</p>
+                <a href="{% url 'admin_application_list' %}" class="btn btn-warning">View Applications</a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card shadow text-center p-3">
+                <h5>Logout</h5>
+                <p class="text-muted">Sign out of the portal</p>
+                <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
