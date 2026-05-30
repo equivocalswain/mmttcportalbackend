@@ -97,3 +97,8 @@ def reject_application(request, pk):
         messages.success(request, f'{application.full_name} has been rejected.')
         return redirect('admin_application_list')
     return render(request, 'applications/admin_application_detail.html', {'application': application})
+def print_application(request, pk):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    application = get_object_or_404(Application, pk=pk, applicant=request.user)
+    return render(request, 'applications/print_application.html', {'application': application})

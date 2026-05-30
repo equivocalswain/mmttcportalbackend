@@ -11,4 +11,5 @@ urlpatterns = [
     path('admin/detail/<int:pk>/', views.admin_application_detail, name='admin_application_detail'),
     path('admin/approve/<int:pk>/', views.approve_application, name='approve_application'),
     path('admin/reject/<int:pk>/', views.reject_application, name='reject_application'),
+    path('print/<int:pk>/', views.print_application, name='print_application'),
 ]

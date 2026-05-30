@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Application Form - {{ application.full_name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            color: #000;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #000;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .header h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+        .header p {
+            margin: 5px 0;
+            font-size: 13px;
+        }
+        .section-title {
+            background: #1a3a5c;
+            color: white;
+            padding: 5px 10px;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+        }
+        table td {
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            font-size: 13px;
+        }
+        table td:first-child {
+            font-weight: bold;
+            width: 35%;
+            background: #f5f5f5;
+        }
+        .signature-section {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .signature-box {
+            text-align: center;
+            width: 40%;
+        }
+        .signature-line {
+            border-top: 1px solid #000;
+            margin-top: 50px;
+            padding-top: 5px;
+            font-size: 12px;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 11px;
+            color: #666;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+        @media print {
+            .no-print { display: none; }
+            body { margin: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Print Button -->
+    <div class="no-print" style="margin-bottom: 20px;">
+        <button onclick="window.print()" 
+            style="padding: 10px 20px; background: #1a3a5c; color: white; border: none; cursor: pointer; border-radius: 4px;">
+            🖨️ Print / Save as PDF
+        </button>
+        <a href="{% url 'my_applications' %}" 
+            style="margin-left: 10px; padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px;">
+            ← Back
+        </a>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <h2>Malaviya Mission Teacher Training Centre (MMTTC)</h2>
+        <p>Course Application Form</p>
+        <p style="font-size: 11px; color: #666;">Application ID: {{ application.pk }} | Submitted: {{ application.submitted_at|date:"d M Y" }}</p>
+    </div>
+
+    <!-- Course Details -->
+    <div class="section-title">Course Details</div>
+    <table>
+        <tr>
+            <td>Course Title</td>
+            <td>{{ application.course.title }}</td>
+        </tr>
+        <tr>
+            <td>Duration</td>
+            <td>{{ application.course.duration }}</td>
+        </tr>
+        <tr>
+            <td>Start Date</td>
+            <td>{{ application.course.start_date }}</td>
+        </tr>
+        <tr>
+            <td>End Date</td>
+            <td>{{ application.course.end_date }}</td>
+        </tr>
+    </table>
+
+    <!-- Personal Details -->
+    <div class="section-title">Applicant Details</div>
+    <table>
+        <tr>
+            <td>Full Name</td>
+            <td>{{ application.full_name }}</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>{{ application.email }}</td>
+        </tr>
+        <tr>
+            <td>Phone</td>
+            <td>{{ application.phone }}</td>
+        </tr>
+        <tr>
+            <td>Designation</td>
+            <td>{{ application.designation }}</td>
+        </tr>
+        <tr>
+            <td>Institution</td>
+            <td>{{ application.institution }}</td>
+        </tr>
+        <tr>
+            <td>State</td>
+            <td>{{ application.state }}</td>
+        </tr>
+        <tr>
+            <td>Application Status</td>
+            <td>{{ application.status|upper }}</td>
+        </tr>
+    </table>
+
+    <!-- Declaration -->
+    <div class="section-title">Declaration</div>
+    <table>
+        <tr>
+            <td colspan="2" style="font-size: 12px; line-height: 1.6;">
+                I hereby declare that the information provided above is true and correct 
+                to the best of my knowledge. I agree to abide by the rules and regulations 
+                of the MMTTC training programme.
+            </td>
+        </tr>
+    </table>
+
+    <!-- Signatures -->
+    <div class="signature-section">
+        <div class="signature-box">
+            <div class="signature-line">
+                Signature of Applicant
+            </div>
+        </div>
+        <div class="signature-box">
+            <div class="signature-line">
+                Signature & Seal of Head of Department
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Malaviya Mission Teacher Training Centre (MMTTC) | This is a system generated form</p>
+    </div>
+
+</body>
+</html>

@@ -45,6 +45,9 @@
                     {% endif %}
                 </td>
                 <td>{{ app.admin_remarks|default:"-" }}</td>
+                <td>
+    <a href="{% url 'print_application' app.pk %}" class="btn btn-sm btn-outline-secondary" target="_blank">Print</a>
+</td>
             </tr>
             {% endfor %}
         </tbody>
