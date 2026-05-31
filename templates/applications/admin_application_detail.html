@@ -9,53 +9,34 @@
                     <hr>
 
                     <h5 class="text-muted">Applicant Information</h5>
-                    <table class="table table-borderless">
-                        <tr>
-                            <td><strong>Full Name</strong></td>
-                            <td>{{ application.full_name }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Email</strong></td>
-                            <td>{{ application.email }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Phone</strong></td>
-                            <td>{{ application.phone }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Institution</strong></td>
-                            <td>{{ application.institution }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Designation</strong></td>
-                            <td>{{ application.designation }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>State</strong></td>
-                            <td>{{ application.state }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Course</strong></td>
-                            <td>{{ application.course.title }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Submitted</strong></td>
-                            <td>{{ application.submitted_at|date:"d M Y" }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Status</strong></td>
-                            <td>
-                                {% if application.status == 'pending' %}
-                                    <span class="badge bg-warning text-dark">Pending</span>
-                                {% elif application.status == 'approved' %}
-                                    <span class="badge bg-success">Approved</span>
-                                {% elif application.status == 'rejected' %}
-                                    <span class="badge bg-danger">Rejected</span>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    </table>
-
+<table class="table table-borderless">
+    <tr><td><strong>Full Name</strong></td><td>{{ application.title }} {{ application.full_name }}</td></tr>
+    <tr><td><strong>Date of Birth</strong></td><td>{{ application.dob }}</td></tr>
+    <tr><td><strong>Category</strong></td><td>{{ application.category }}</td></tr>
+    <tr><td><strong>PWD</strong></td><td>{% if application.pwd %}Yes{% else %}No{% endif %}</td></tr>
+    <tr><td><strong>Aadhaar</strong></td><td>{{ application.aadhaar }}</td></tr>
+    <tr><td><strong>Faculty Type</strong></td><td>{{ application.faculty_type }}</td></tr>
+    <tr><td><strong>Qualification</strong></td><td>{{ application.highest_qualification }}</td></tr>
+    <tr><td><strong>Email</strong></td><td>{{ application.email }}</td></tr>
+    <tr><td><strong>Mobile</strong></td><td>{{ application.mobile }}</td></tr>
+    <tr><td><strong>Institute Address</strong></td><td>{{ application.institute_address }}</td></tr>
+    <tr><td><strong>Institute State</strong></td><td>{{ application.institute_state }}</td></tr>
+    <tr><td><strong>Institute Pincode</strong></td><td>{{ application.institute_pincode }}</td></tr>
+    <tr><td><strong>Course</strong></td><td>{{ application.course.title }}</td></tr>
+    <tr><td><strong>Submitted</strong></td><td>{{ application.submitted_at|date:"d M Y" }}</td></tr>
+    <tr>
+        <td><strong>Status</strong></td>
+        <td>
+            {% if application.status == 'pending' %}
+                <span class="badge bg-warning text-dark">Pending</span>
+            {% elif application.status == 'approved' %}
+                <span class="badge bg-success">Approved</span>
+            {% elif application.status == 'rejected' %}
+                <span class="badge bg-danger">Rejected</span>
+            {% endif %}
+        </td>
+    </tr>
+</table>
                     <h5 class="text-muted mt-3">Uploaded Documents</h5>
                     <table class="table table-borderless">
                         <tr>

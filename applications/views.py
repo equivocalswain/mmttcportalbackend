@@ -7,13 +7,29 @@ from courses.models import Course
 def apply_course(request, course_pk):
     if not request.user.is_authenticated:
         return redirect('login')
+
     course = get_object_or_404(Course, pk=course_pk)
+
     if Application.objects.filter(applicant=request.user, course=course).exists():
         messages.warning(request, 'You have already applied for this course!')
         return redirect('applicant_course_list')
+
     if course.is_closed:
         messages.error(request, 'This course is no longer accepting applications!')
         return redirect('applicant_course_list')
+
+    states = [
+        'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar',
+        'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh',
+        'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra',
+        'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab',
+        'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura',
+        'Uttar Pradesh', 'Uttarakhand', 'West Bengal',
+        'Andaman and Nicobar Islands', 'Chandigarh', 'Delhi',
+        'Jammu and Kashmir', 'Ladakh', 'Lakshadweep', 'Puducherry',
+        'Dadra and Nagar Haveli and Daman and Diu'
+    ]
+
     if request.method == 'POST':
         form = ApplicationForm(request.POST, request.FILES)
         if form.is_valid():
@@ -21,21 +37,23 @@ def apply_course(request, course_pk):
             application.applicant = request.user
             application.course = course
             application.status = 'pending'
+            application.course_type = request.POST.get('course_type', '')
+            # Handle pwd and accommodation boolean
+            application.pwd = request.POST.get('pwd') == 'True'
+            application.accommodation = request.POST.get('accommodation') == 'True'
             application.save()
             messages.success(request, 'Application submitted successfully!')
             return redirect('my_applications')
+        else:
+            print(form.errors)
     else:
-        initial = {
-            'full_name': request.user.get_full_name() or request.user.username,
-            'email': request.user.email,
-            'phone': request.user.phone,
-            'institution': request.user.institution,
-            'designation': request.user.designation,
-            'state': request.user.state,
-        }
-        form = ApplicationForm(initial=initial)
-    return render(request, 'applications/apply.html', {'form': form, 'course': course})
+        form = ApplicationForm()
 
+    return render(request, 'applications/apply.html', {
+        'form': form,
+        'course': course,
+        'states': states
+    })
 
 def my_applications(request):
     if not request.user.is_authenticated:

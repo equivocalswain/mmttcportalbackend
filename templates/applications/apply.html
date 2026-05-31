@@ -1,30 +1,312 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-7">
-            <div class="card shadow">
-                <div class="card-body p-4">
-                    <h3>Apply for: {{ course.title }}</h3>
-                    <p class="text-muted">Duration: {{ course.duration }} | Seats Available: {{ course.seats_available }}</p>
-                    <hr>
-                    <form method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {% for field in form %}
-                            <div class="mb-3">
-                                <label class="form-label">{{ field.label }}</label>
-                                {{ field }}
-                                {% if field.errors %}
-                                    <div class="text-danger small">{{ field.errors }}</div>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                        <button type="submit" class="btn btn-success w-100">Submit Application</button>
-                        <a href="{% url 'course_detail' course.pk %}" class="btn btn-secondary w-100 mt-2">Cancel</a>
-                    </form>
+<div class="container mt-4 mb-5">
+    <div class="card shadow">
+        <div class="card-body p-4">
+            <h3 class="text-center mb-1">Application Form / आवेदन पत्र</h3>
+            <p class="text-center text-muted mb-4">{{ course.title }}</p>
+            <hr>
+
+            <form method="POST" enctype="multipart/form-data" id="applicationForm">
+                {% csrf_token %}
+
+                <!-- COURSE DETAILS -->
+                <h5 class="text-uppercase fw-bold mb-3" style="color:#1a3a5c;">
+                    Course Details / पाठ्यक्रम विवरण
+                </h5>
+                <div class="row mb-3">
+                    <label class="col-md-5 col-form-label">
+                        Course Type / कोर्स का प्रकार
+                    </label>
+                    <div class="col-md-7">
+                        <select class="form-select" id="courseTypeSelect">
+                            <option value="">Select Course Type</option>
+                            <option value="OC">OC - Orientation Courses</option>
+                            <option value="RC-I">RC-I - Refresher Courses</option>
+                            <option value="SC">SC - Short Term Courses</option>
+                            <option value="NEP">NEP</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
+                <div class="row mb-3">
+                    <label class="col-md-5 col-form-label">
+                        Course Name / कोर्स का नाम
+                    </label>
+                    <div class="col-md-7">
+                        <input type="text" class="form-control" value="{{ course.title }}" readonly>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- PERSONAL DETAILS -->
+                <h5 class="text-uppercase fw-bold mb-3" style="color:#1a3a5c;">
+                    Personal Details / व्यक्तिगत विवरण
+                </h5>
+                <div class="row mb-3">
+                    <label class="col-md-5 col-form-label">Title / उपपद</label>
+                    <div class="col-md-7">
+                        <select name="title" class="form-select" required>
+                            <option value="">Select Title</option>
+                            <option value="Mr.">Mr.</option>
+                            <option value="Mrs.">Mrs.</option>
+                            <option value="Dr.">Dr.</option>
+                            <option value="Prof.">Prof.</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-md-5 col-form-label">Name / नाम</label>
+                    <div class="col-md-7">
+                        <input type="text" name="full_name" class="form-control" maxlength="100" placeholder="Enter Name (max 100 chars)" required value="{{ request.user.get_full_name }}">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-md-5 col-form-label">Category / वर्ग</label>
+                    <div class="col-md-7">
+                        <select name="category" class="form-select" required>
+                            <option value="">Select Category</option>
+                            <option value="General">General</option>
+                            <option value="OBC">OBC</option>
+                            <option value="SC">SC</option>
+                            <option value="ST">ST</option>
+                            <option value="EWS">EWS</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-md-5 col-form-label">Person with Disability / दिव्यांग व्यक्ति</label>
+                    <div class="col-md-7">
+                        <select name="pwd" class="form-select" required>
+                            <option value="">Select PWD Status</option>
+                            <option value="False">No</option>
+                            <option value="True">Yes</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-md-5 col-form-label">Aadhaar No. / आधार सं०</label>
+                    <div class="col-md-7">
+                        <input type="text" name="aadhaar" class="form-control" maxlength="12" placeholder="Enter Aadhaar No." required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-md-5 col-form-label">
+                        Photograph / फोटो
+                        <small class="text-muted d-block">(Max 50KB, jpg/png, 1:1 ratio)</small>
+                    </label>
+                    <div class="col-md-7">
+                        <input type="file" name="photograph" class="form-control" accept="image/*">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-md-5 col-form-label">D.O.B / जन्म तिथि</label>
+                    <div class="col-md-7">
+                        <input type="date" name="dob" class="form-control" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-md-5 col-form-label">Faculty or Researcher/Non-Teaching? / प्राध्यापक अथवा शोधार्थी</label>
+                    <div class="col-md-7">
+                        <select name="faculty_type" class="form-select" required>
+                            <option value="">--Select--</option>
+                            <option value="Faculty">Faculty</option>
+                            <option value="Researcher/Non-Teaching">Researcher/Non-Teaching</option>
+                        </select>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- CONTACT DETAILS -->
+                <h5 class="text-uppercase fw-bold mb-3" style="color:#1a3a5c;">
+                    Contact Details / संपर्क विवरण
+                </h5>
+                <h6 class="fw-bold mb-2">Official Address / आधिकारिक पता</h6>
+                <div class="row mb-3">
+                    <label class="col-md-5 col-form-label">Institute Address / संस्थान का पता</label>
+                    <div class="col-md-7">
+                        <textarea name="institute_address" class="form-control" maxlength="100" rows="2" placeholder="Enter Institute Address (Max 100 Chars)" required>{{ request.user.institution }}</textarea>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-md-5 col-form-label">State / राज्य</label>
+                    <div class="col-md-7">
+                        <select name="institute_state" class="form-select" id="instituteState" required>
+                            <option value="">Select State</option>
+                            {% for state in states %}
+                                <option value="{{ state }}" {% if state == request.user.state %}selected{% endif %}>{{ state }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-md-5 col-form-label">Pin Code / पिन कोड</label>
+                    <div class="col-md-7">
+                        <input type="text" name="institute_pincode" class="form-control" maxlength="6" placeholder="Enter Pin" required id="institutePin">
+                    </div>
+                </div>
+
+                <h6 class="fw-bold mb-2 mt-3">Mailing Address / पत्राचार का पता</h6>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="sameAsInstitute">
+                            <label class="form-check-label" for="sameAsInstitute">
+                                Same as Institution/University Address / आधिकारिक पते के समान
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div id="mailingFields">
+                    <div class="row mb-3">
+                        <label class="col-md-5 col-form-label">Address / पता</label>
+                        <div class="col-md-7">
+                            <textarea name="mailing_address" class="form-control" maxlength="100" rows="2" placeholder="Enter Correspondence Address (Max 100 Chars)" id="mailingAddress"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-md-5 col-form-label">State / राज्य</label>
+                        <div class="col-md-7">
+                            <select name="mailing_state" class="form-select" id="mailingState">
+                                <option value="">Select State</option>
+                                {% for state in states %}
+                                    <option value="{{ state }}">{{ state }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-md-5 col-form-label">Pin Code / पिन कोड</label>
+                        <div class="col-md-7">
+                            <input type="text" name="mailing_pincode" class="form-control" maxlength="6" placeholder="Enter Pin" id="mailingPin">
+                        </div>
+                    </div>
+                </div>
+
+                <h6 class="fw-bold mb-2 mt-3">Other Contact Details / अन्य सम्पर्क सूत्र</h6>
+                <div class="row mb-3">
+                    <label class="col-md-5 col-form-label">Mobile Number / मोबाइल नंबर</label>
+                    <div class="col-md-7">
+                        <input type="text" name="mobile" class="form-control" maxlength="10" placeholder="Enter Mobile No." required value="{{ request.user.phone }}">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-md-5 col-form-label">Alt. Number / वैकल्पिक नंबर</label>
+                    <div class="col-md-7">
+                        <input type="text" name="alternate_mobile" class="form-control" maxlength="10" placeholder="Enter Alternate No.">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-md-5 col-form-label">Email / ईमेल</label>
+                    <div class="col-md-7">
+                        <input type="email" name="email" class="form-control" placeholder="Enter Email" required value="{{ request.user.email }}">
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- ACADEMIC DETAILS -->
+                <h5 class="text-uppercase fw-bold mb-3" style="color:#1a3a5c;">
+                    Academic Career Details / शैक्षणिक व्यवसाय विवरण
+                </h5>
+                <div class="row mb-3">
+                    <label class="col-md-5 col-form-label">Highest Educational Qualification / उच्चतम शैक्षणिक योग्यता</label>
+                    <div class="col-md-7">
+                        <select name="highest_qualification" class="form-select" required>
+                            <option value="">Select Highest Education Qualification</option>
+                            <option value="Graduate">Graduate</option>
+                            <option value="Post Graduate">Post Graduate</option>
+                            <option value="M.Phil">M.Phil</option>
+                            <option value="Ph.D">Ph.D</option>
+                            <option value="Post Doctoral">Post Doctoral</option>
+                        </select>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- PREVIOUS COURSES -->
+                <h5 class="text-uppercase fw-bold mb-1" style="color:#1a3a5c;">
+                    Details of Earlier Attended Courses / पहले किये हुए पाठ्यक्रमों का विवरण
+                </h5>
+                <p class="text-danger small mb-2">(Leave Blank if not applicable)</p>
+                <table class="table table-bordered mb-3">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Course Name / कोर्स का नाम</th>
+                            <th>Month & Year / महीना और वर्ष</th>
+                            <th>Center Name / सेंटर का नाम</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" name="prev_course1" class="form-control form-control-sm" placeholder="Course name"></td>
+                            <td><input type="text" name="prev_course1_year" class="form-control form-control-sm" placeholder="MM/YYYY"></td>
+                            <td><input type="text" name="prev_course1_center" class="form-control form-control-sm" maxlength="50" placeholder="Center name"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" name="prev_course2" class="form-control form-control-sm" placeholder="Course name"></td>
+                            <td><input type="text" name="prev_course2_year" class="form-control form-control-sm" placeholder="MM/YYYY"></td>
+                            <td><input type="text" name="prev_course2_center" class="form-control form-control-sm" maxlength="50" placeholder="Center name"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <hr>
+
+                <!-- ACCOMMODATION -->
+                <div class="row mb-3">
+                    <label class="col-md-7 col-form-label">
+                        Accommodation required? (For offline mode only) / निवास सुविधा चाहिए?
+                    </label>
+                    <div class="col-md-5">
+                        <select name="accommodation" class="form-select">
+                            <option value="False">No / नहीं</option>
+                            <option value="True">Yes / हाँ</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- DOCUMENT UPLOAD -->
+                <div class="row mb-3">
+                    <label class="col-md-5 col-form-label">Upload Supporting Document</label>
+                    <div class="col-md-7">
+                        <input type="file" name="original_form" class="form-control">
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- DECLARATION -->
+                <div class="form-check mb-4">
+                    <input class="form-check-input" type="checkbox" id="declarationCheck" required>
+                    <label class="form-check-label" for="declarationCheck">
+                        I hereby declare that the entries made in this registration form are true to the best of my knowledge and belief.
+                        मैं इस बात की घोषणा करता हूं / करती हूँ कि इस पंजीकरण फॉर्म में की गई प्रविष्टियां मेरे ज्ञान और विश्वास के अनुसार से सत्य हैं।
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 btn-lg">Submit / जमा करें</button>
+                <a href="{% url 'course_detail' course.pk %}" class="btn btn-secondary w-100 mt-2">Cancel / रद्द करें</a>
+            </form>
         </div>
     </div>
 </div>
+
+<script>
+    // Same as Institute checkbox
+    document.getElementById('sameAsInstitute').addEventListener('change', function() {
+        if (this.checked) {
+            document.getElementById('mailingAddress').value = document.querySelector('[name="institute_address"]').value;
+            document.getElementById('mailingState').value = document.getElementById('instituteState').value;
+            document.getElementById('mailingPin').value = document.getElementById('institutePin').value;
+            document.getElementById('mailingFields').style.opacity = '0.5';
+            document.getElementById('mailingFields').style.pointerEvents = 'none';
+        } else {
+            document.getElementById('mailingFields').style.opacity = '1';
+            document.getElementById('mailingFields').style.pointerEvents = 'auto';
+        }
+    });
+</script>
 {% endblock %}

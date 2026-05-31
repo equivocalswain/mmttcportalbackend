@@ -4,183 +4,305 @@
     <meta charset="UTF-8">
     <title>Application Form - {{ application.full_name }}</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            color: #000;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; font-size: 11px; color: #000; background: #fff; }
+        
+        .no-print { padding: 15px; background: #f0f0f0; }
+        .no-print button {
+            padding: 8px 20px; background: #1a3a5c; color: white;
+            border: none; cursor: pointer; border-radius: 4px; margin-right: 10px;
         }
-        .header {
+        .no-print a {
+            padding: 8px 20px; background: #6c757d; color: white;
+            text-decoration: none; border-radius: 4px;
+        }
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 10px auto;
+            padding: 12mm;
+            border: 1px solid #ccc;
+            background: white;
+        }
+
+        /* Header */
+        .header-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+        .header-center { text-align: center; }
+        .header-center h2 { font-size: 15px; font-weight: bold; }
+        .header-center h3 { font-size: 13px; font-weight: bold; }
+        .header-center p { font-size: 11px; }
+        .photo-box {
+            width: 100px; height: 120px;
+            border: 1px solid #000;
             text-align: center;
-            border-bottom: 2px solid #000;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
+            font-size: 9px;
+            padding: 5px;
+            vertical-align: top;
         }
-        .header h2 {
-            margin: 0;
-            font-size: 20px;
-        }
-        .header p {
-            margin: 5px 0;
-            font-size: 13px;
-        }
+
+        /* Section titles */
         .section-title {
             background: #1a3a5c;
             color: white;
-            padding: 5px 10px;
-            font-size: 14px;
-            margin-top: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 5px;
-        }
-        table td {
-            padding: 8px 10px;
-            border: 1px solid #ccc;
-            font-size: 13px;
-        }
-        table td:first-child {
+            padding: 3px 8px;
+            font-size: 11px;
             font-weight: bold;
-            width: 35%;
-            background: #f5f5f5;
+            margin-top: 8px;
+            margin-bottom: 3px;
         }
+
+        /* Form table */
+        .form-table { width: 100%; border-collapse: collapse; }
+        .form-table td {
+            border: 1px solid #999;
+            padding: 4px 6px;
+            vertical-align: top;
+            font-size: 10.5px;
+        }
+        .form-table .label {
+            background: #f0f0f0;
+            font-weight: bold;
+            width: 38%;
+            font-size: 10px;
+        }
+        .form-table .value { width: 62%; }
+        .form-table .label-hindi { font-size: 9px; color: #444; font-weight: normal; }
+
+        /* Previous courses table */
+        .prev-table { width: 100%; border-collapse: collapse; margin-top: 3px; }
+        .prev-table th {
+            border: 1px solid #999;
+            padding: 4px 6px;
+            background: #e0e0e0;
+            font-size: 10px;
+            text-align: center;
+        }
+        .prev-table td {
+            border: 1px solid #999;
+            padding: 4px 6px;
+            font-size: 10.5px;
+        }
+
+        /* Declaration */
+        .declaration {
+            border: 1px solid #999;
+            padding: 8px;
+            font-size: 10px;
+            line-height: 1.7;
+            margin-top: 8px;
+        }
+
+        /* Signature */
         .signature-section {
-            margin-top: 50px;
             display: flex;
             justify-content: space-between;
+            margin-top: 30px;
         }
-        .signature-box {
-            text-align: center;
-            width: 40%;
-        }
+        .signature-box { text-align: center; width: 45%; }
         .signature-line {
             border-top: 1px solid #000;
-            margin-top: 50px;
-            padding-top: 5px;
-            font-size: 12px;
+            margin-top: 40px;
+            padding-top: 4px;
+            font-size: 10px;
         }
+
+        /* Footer */
         .footer {
-            margin-top: 30px;
             text-align: center;
-            font-size: 11px;
+            font-size: 9px;
             color: #666;
             border-top: 1px solid #ccc;
-            padding-top: 10px;
+            padding-top: 5px;
+            margin-top: 15px;
         }
+
+        /* Application ID bar */
+        .app-id-bar {
+            text-align: right;
+            font-size: 10px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
         @media print {
             .no-print { display: none; }
-            body { margin: 20px; }
+            .page {
+                margin: 0;
+                border: none;
+                padding: 10mm;
+                width: 100%;
+            }
+            body { background: white; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Print Button -->
-    <div class="no-print" style="margin-bottom: 20px;">
-        <button onclick="window.print()"
-            style="padding: 10px 20px; background: #1a3a5c; color: white; border: none; cursor: pointer; border-radius: 4px;">
-            🖨️ Print / Save as PDF
-        </button>
-        <a href="{% url 'my_applications' %}"
-            style="margin-left: 10px; padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px;">
-            ← Back
-        </a>
+    <!-- Print Controls -->
+    <div class="no-print">
+        <button onclick="window.print()">🖨️ Print / Save as PDF</button>
+        <a href="{% url 'my_applications' %}">← Back to Applications</a>
     </div>
 
-    <!-- Header -->
-    <div class="header">
-        <h2>Malaviya Mission Teacher Training Centre (MMTTC)</h2>
-        <p>Course Application Form</p>
-        <p style="font-size: 11px; color: #666;">
-            Application ID: {{ application.pk }} | 
-            Submitted: {{ application.submitted_at|date:"d M Y" }}
-        </p>
-    </div>
+    <div class="page">
 
-    <!-- Course Details -->
-    <div class="section-title">Course Details</div>
-    <table>
-        <tr>
-            <td>Course Title</td>
-            <td>{{ application.course.title }}</td>
-        </tr>
-        <tr>
-            <td>Duration</td>
-            <td>{{ application.course.duration }}</td>
-        </tr>
-        <tr>
-            <td>Start Date</td>
-            <td>{{ application.course.start_date }}</td>
-        </tr>
-        <tr>
-            <td>End Date</td>
-            <td>{{ application.course.end_date }}</td>
-        </tr>
-    </table>
+        <!-- App ID -->
+        <div class="app-id-bar">
+            Application ID: {{ application.pk }} &nbsp;|&nbsp; Submitted: {{ application.submitted_at|date:"d M Y" }}
+        </div>
 
-    <!-- Personal Details -->
-    <div class="section-title">Applicant Details</div>
-    <table>
-        <tr>
-            <td>Full Name</td>
-            <td>{{ application.full_name }}</td>
-        </tr>
-        <tr>
-            <td>Email</td>
-            <td>{{ application.email }}</td>
-        </tr>
-        <tr>
-            <td>Phone</td>
-            <td>{{ application.phone }}</td>
-        </tr>
-        <tr>
-            <td>Designation</td>
-            <td>{{ application.designation }}</td>
-        </tr>
-        <tr>
-            <td>Institution</td>
-            <td>{{ application.institution }}</td>
-        </tr>
-        <tr>
-            <td>State</td>
-            <td>{{ application.state }}</td>
-        </tr>
-        <tr>
-            <td>Application Status</td>
-            <td>{{ application.status|upper }}</td>
-        </tr>
-    </table>
+        <!-- Header -->
+        <table class="header-table">
+            <tr>
+                <td style="width: 75%; text-align: center; border: none; padding-bottom: 8px;">
+                    <h2>Malaviya Mission Teacher Training Centre</h2>
+                    <h3>मालवीय मिशन शिक्षक प्रशिक्षण केन्द्र (MMTTC)</h3>
+                    <p style="margin-top:4px; font-size:12px; font-weight:bold;">
+                        Course Application Form / पाठ्यक्रम आवेदन पत्र
+                    </p>
+                </td>
+                <td style="width: 25%; border: none; text-align: center; vertical-align: top;">
+                    <div class="photo-box">
+                        {% if application.photograph %}
+                            <img src="{{ application.photograph.url }}" style="width:100%; height:100%; object-fit:cover;">
+                        {% else %}
+                            <div style="margin-top:30px; color:#888;">
+                                Passport Size<br>Photograph<br>पासपोर्ट साइज<br>फोटो
+                            </div>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+        </table>
 
-    <!-- Declaration -->
-    <div class="section-title">Declaration</div>
-    <table>
-        <tr>
-            <td colspan="2" style="font-size: 12px; line-height: 1.6;">
-                I hereby declare that the information provided above is true and correct
-                to the best of my knowledge. I agree to abide by the rules and regulations
-                of the MMTTC training programme.
-            </td>
-        </tr>
-    </table>
+        <hr style="border: 1.5px solid #1a3a5c; margin-bottom: 8px;">
 
-    <!-- Signatures -->
-    <div class="signature-section">
-        <div class="signature-box">
-            <div class="signature-line">
-                Signature of Applicant
+        <!-- SECTION 1: Course Details -->
+        <div class="section-title">1. Course Details / पाठ्यक्रम विवरण</div>
+        <table class="form-table">
+            <tr>
+                <td class="label">Course Name<br><span class="label-hindi">कोर्स का नाम</span></td>
+                <td class="value">{{ application.course.title }}</td>
+                <td class="label">Duration<br><span class="label-hindi">अवधि</span></td>
+                <td class="value">{{ application.course.duration }}</td>
+            </tr>
+            <tr>
+                <td class="label">Start Date<br><span class="label-hindi">प्रारंभ तिथि</span></td>
+                <td class="value">{{ application.course.start_date }}</td>
+                <td class="label">End Date<br><span class="label-hindi">समाप्ति तिथि</span></td>
+                <td class="value">{{ application.course.end_date }}</td>
+            </tr>
+        </table>
+
+        <!-- SECTION 2: Personal Details -->
+        <div class="section-title">2. Personal Details / व्यक्तिगत विवरण</div>
+        <table class="form-table">
+            <tr>
+                <td class="label">Title<br><span class="label-hindi">उपपद</span></td>
+                <td class="value">{{ application.title }}</td>
+                <td class="label">Full Name<br><span class="label-hindi">नाम</span></td>
+                <td class="value">{{ application.full_name }}</td>
+            </tr>
+            <tr>
+                <td class="label">Date of Birth<br><span class="label-hindi">जन्म तिथि</span></td>
+                <td class="value">{{ application.dob }}</td>
+                <td class="label">Category<br><span class="label-hindi">वर्ग</span></td>
+                <td class="value">{{ application.category }}</td>
+            </tr>
+            <tr>
+                <td class="label">PWD<br><span class="label-hindi">दिव्यांग</span></td>
+                <td class="value">{% if application.pwd %}Yes / हाँ{% else %}No / नहीं{% endif %}</td>
+                <td class="label">Aadhaar No.<br><span class="label-hindi">आधार सं०</span></td>
+                <td class="value">{{ application.aadhaar }}</td>
+            </tr>
+            <tr>
+                <td class="label">Faculty/Researcher<br><span class="label-hindi">प्राध्यापक/शोधार्थी</span></td>
+                <td class="value">{{ application.faculty_type }}</td>
+                <td class="label">Highest Qualification<br><span class="label-hindi">उच्चतम योग्यता</span></td>
+                <td class="value">{{ application.highest_qualification }}</td>
+            </tr>
+        </table>
+
+        <!-- SECTION 3: Contact Details -->
+        <div class="section-title">3. Contact Details / संपर्क विवरण</div>
+        <table class="form-table">
+            <tr>
+                <td class="label">Mobile No.<br><span class="label-hindi">मोबाइल नंबर</span></td>
+                <td class="value">{{ application.mobile }}</td>
+                <td class="label">Alternate No.<br><span class="label-hindi">वैकल्पिक नंबर</span></td>
+                <td class="value">{{ application.alternate_mobile|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td class="label">Email<br><span class="label-hindi">ईमेल</span></td>
+                <td colspan="3" class="value">{{ application.email }}</td>
+            </tr>
+            <tr>
+                <td class="label">Institute Address<br><span class="label-hindi">संस्थान का पता</span></td>
+                <td class="value">{{ application.institute_address }}</td>
+                <td class="label">State / राज्य</td>
+                <td class="value">{{ application.institute_state }}</td>
+            </tr>
+            <tr>
+                <td class="label">Pincode<br><span class="label-hindi">पिन कोड</span></td>
+                <td class="value">{{ application.institute_pincode }}</td>
+                <td class="label">Accommodation<br><span class="label-hindi">निवास सुविधा</span></td>
+                <td class="value">{% if application.accommodation %}Required / चाहिए{% else %}Not Required / नहीं चाहिए{% endif %}</td>
+            </tr>
+            <tr>
+                <td class="label">Mailing Address<br><span class="label-hindi">पत्राचार का पता</span></td>
+                <td class="value">{{ application.mailing_address|default:"-" }}</td>
+                <td class="label">Mailing State / राज्य</td>
+                <td class="value">{{ application.mailing_state|default:"-" }}</td>
+            </tr>
+        </table>
+
+        <!-- SECTION 4: Previous Courses -->
+        <div class="section-title">4. Earlier Attended Courses / पहले किये हुए पाठ्यक्रम</div>
+        <table class="prev-table">
+            <tr>
+                <th>Course Name / कोर्स का नाम</th>
+                <th>Month & Year / महीना और वर्ष</th>
+                <th>Center Name / केंद्र का नाम</th>
+            </tr>
+            <tr>
+                <td>{{ application.prev_course1|default:"-" }}</td>
+                <td style="text-align:center;">{{ application.prev_course1_year|default:"-" }}</td>
+                <td>{{ application.prev_course1_center|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td>{{ application.prev_course2|default:"-" }}</td>
+                <td style="text-align:center;">{{ application.prev_course2_year|default:"-" }}</td>
+                <td>{{ application.prev_course2_center|default:"-" }}</td>
+            </tr>
+        </table>
+
+        <!-- Declaration -->
+        <div class="section-title">5. Declaration / घोषणा</div>
+        <div class="declaration">
+            I hereby declare that the entries made in this registration form are true to the best of my knowledge and belief.<br>
+            मैं इस बात की घोषणा करता हूं / करती हूँ कि इस पंजीकरण फॉर्म में की गई प्रविष्टियां मेरे ज्ञान और विश्वास के अनुसार से सत्य हैं।
+        </div>
+
+        <!-- Signatures -->
+        <div class="signature-section">
+            <div class="signature-box">
+                <div class="signature-line">
+                    Signature of Applicant<br>आवेदक के हस्ताक्षर
+                </div>
+            </div>
+            <div class="signature-box">
+                <div class="signature-line">
+                    Signature & Seal of Head of Department<br>विभागाध्यक्ष के हस्ताक्षर एवं मुहर
+                </div>
             </div>
         </div>
-        <div class="signature-box">
-            <div class="signature-line">
-                Signature & Seal of Head of Department
-            </div>
-        </div>
-    </div>
 
-    <!-- Footer -->
-    <div class="footer">
-        <p>Malaviya Mission Teacher Training Centre (MMTTC) | This is a system generated form</p>
+        <!-- Footer -->
+        <div class="footer">
+            Malaviya Mission Teacher Training Centre (MMTTC) &nbsp;|&nbsp; System Generated Form / सिस्टम जनित फॉर्म
+        </div>
+
     </div>
 
 </body>

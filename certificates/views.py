@@ -61,7 +61,7 @@ def generate_certificate_pdf(certificate):
     c.setFont("Helvetica", 13)
     c.setFillColor(colors.black)
     c.drawCentredString(width / 2, height - 325,
-        f"{certificate.application.designation}, {certificate.application.institution}")
+         f"{certificate.application.faculty_type}, {certificate.application.institute_address}")
 
     # Course text
     c.drawCentredString(width / 2, height - 360, "has successfully participated in")
