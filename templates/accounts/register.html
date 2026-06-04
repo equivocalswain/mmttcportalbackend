@@ -1,27 +1,134 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<div class="container mt-5">
+<div class="container mt-4 mb-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-8">
             <div class="card shadow">
+                <!-- Header -->
+                <div style="background-color: #800000; padding: 15px; text-align: center;">
+                    <h4 style="color: white; margin: 0;">
+                        <i class="bi bi-person-plus"></i> New Applicant Registration
+                    </h4>
+                    <p style="color: #ddd; font-size: 12px; margin: 4px 0 0;">
+                        UGC - Malaviya Mission Teacher Training Centre, BHU Varanasi
+                    </p>
+                </div>
+
                 <div class="card-body p-4">
-                    <h3 class="text-center mb-4">Create Account</h3>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-danger">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+
                     <form method="POST">
                         {% csrf_token %}
-                        {% for field in form %}
-                            <div class="mb-3">
-                                <label class="form-label">{{ field.label }}</label>
-                                {{ field }}
-                                {% if field.errors %}
-                                    <div class="text-danger small">{{ field.errors }}</div>
-                                {% endif %}
+
+                        <!-- Account Details -->
+                        <div style="background-color:#800000; color:white; padding:6px 12px; font-size:13px; font-weight:bold; margin-bottom:15px;">
+                            <i class="bi bi-shield-lock"></i> Account Details
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold" style="font-size:13px;">Username <span class="text-danger">*</span></label>
+                                <input type="text" name="username" class="form-control" required>
                             </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold" style="font-size:13px;">Email Address <span class="text-danger">*</span></label>
+                                <input type="email" name="email" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold" style="font-size:13px;">Password <span class="text-danger">*</span></label>
+                                <input type="password" name="password1" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold" style="font-size:13px;">Confirm Password <span class="text-danger">*</span></label>
+                                <input type="password" name="password2" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <!-- Professional Details -->
+                        <div style="background-color:#800000; color:white; padding:6px 12px; font-size:13px; font-weight:bold; margin-bottom:15px; margin-top:10px;">
+                            <i class="bi bi-building"></i> Professional Details
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold" style="font-size:13px;">Institution / University <span class="text-danger">*</span></label>
+                                <input type="text" name="institution" class="form-control" placeholder="e.g. BHU, IIT Delhi" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold" style="font-size:13px;">Designation <span class="text-danger">*</span></label>
+                                <input type="text" name="designation" class="form-control" placeholder="e.g. Assistant Professor" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold" style="font-size:13px;">Mobile Number <span class="text-danger">*</span></label>
+                                <input type="text" name="phone" class="form-control" maxlength="10" placeholder="10 digit mobile number" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold" style="font-size:13px;">State <span class="text-danger">*</span></label>
+                                <select name="state" class="form-select" required>
+                                    <option value="">Select State</option>
+                                    <option>Andhra Pradesh</option>
+                                    <option>Arunachal Pradesh</option>
+                                    <option>Assam</option>
+                                    <option>Bihar</option>
+                                    <option>Chhattisgarh</option>
+                                    <option>Goa</option>
+                                    <option>Gujarat</option>
+                                    <option>Haryana</option>
+                                    <option>Himachal Pradesh</option>
+                                    <option>Jharkhand</option>
+                                    <option>Karnataka</option>
+                                    <option>Kerala</option>
+                                    <option>Madhya Pradesh</option>
+                                    <option>Maharashtra</option>
+                                    <option>Manipur</option>
+                                    <option>Meghalaya</option>
+                                    <option>Mizoram</option>
+                                    <option>Nagaland</option>
+                                    <option>Odisha</option>
+                                    <option>Punjab</option>
+                                    <option>Rajasthan</option>
+                                    <option>Sikkim</option>
+                                    <option>Tamil Nadu</option>
+                                    <option>Telangana</option>
+                                    <option>Tripura</option>
+                                    <option>Uttar Pradesh</option>
+                                    <option>Uttarakhand</option>
+                                    <option>West Bengal</option>
+                                    <option>Delhi</option>
+                                    <option>Jammu and Kashmir</option>
+                                    <option>Ladakh</option>
+                                    <option>Puducherry</option>
+                                    <option>Chandigarh</option>
+                                    <option>Andaman and Nicobar Islands</option>
+                                    <option>Lakshadweep</option>
+                                    <option>Dadra and Nagar Haveli and Daman and Diu</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Error display -->
+                        {% for field in form %}
+                            {% if field.errors %}
+                                <div class="alert alert-danger py-2" style="font-size:13px;">
+                                    <strong>{{ field.label }}:</strong> {{ field.errors|striptags }}
+                                </div>
+                            {% endif %}
                         {% endfor %}
-                        <button type="submit" class="btn btn-success w-100">Register</button>
+
+                        <button type="submit" class="btn w-100 text-white fw-bold mt-2"
+                            style="background-color: #800000; padding: 10px;">
+                            <i class="bi bi-person-check"></i> Create Account
+                        </button>
                     </form>
-                    <p class="text-center mt-3">
-                        Already have an account? <a href="{% url 'login' %}">Login</a>
+
+                    <hr>
+                    <p class="text-center mb-0" style="font-size: 13px;">
+                        Already have an account?
+                        <a href="{% url 'login' %}" style="color: #800000; font-weight: bold;">
+                            Login here
+                        </a>
                     </p>
                 </div>
             </div>

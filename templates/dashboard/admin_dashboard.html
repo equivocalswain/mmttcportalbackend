@@ -1,118 +1,127 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Admin Dashboard</h2>
-        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+<div class="container mt-4 mb-5">
+
+    <!-- Page Title -->
+    <div style="border-left: 4px solid #800000; padding: 8px 15px; background: white; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08);">
+        <h5 style="color: #800000; margin: 0;">
+            <i class="bi bi-speedometer2"></i> Admin Dashboard
+        </h5>
+        <small class="text-muted">Welcome, {{ request.user.username }} | UGC-MMTTC Portal</small>
     </div>
 
-    <!-- Statistics Cards -->
-    <div class="row mb-4">
-        <div class="col-md-3 mb-3">
-            <div class="card shadow text-center border-primary">
-                <div class="card-body">
-                    <h1 class="text-primary">{{ total_applications }}</h1>
-                    <p class="text-muted mb-0">Total Applications</p>
-                </div>
+    <!-- Stats Row 1 — Applications -->
+    <!-- Stats Row 1 — Applications -->
+<div class="row mb-3">
+    <div class="col-6 col-md-3">
+        <a href="{% url 'admin_application_list' %}" style="text-decoration:none;">
+            <div class="stat-card">
+                <div class="number">{{ total_applications }}</div>
+                <div class="label">Total Applications</div>
             </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="card shadow text-center border-warning">
-                <div class="card-body">
-                    <h1 class="text-warning">{{ pending }}</h1>
-                    <p class="text-muted mb-0">Pending</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="card shadow text-center border-success">
-                <div class="card-body">
-                    <h1 class="text-success">{{ approved }}</h1>
-                    <p class="text-muted mb-0">Approved</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="card shadow text-center border-danger">
-                <div class="card-body">
-                    <h1 class="text-danger">{{ rejected }}</h1>
-                    <p class="text-muted mb-0">Rejected</p>
-                </div>
-            </div>
-        </div>
+        </a>
     </div>
-
-    <!-- Course Stats Row -->
-    <div class="row mb-4">
-        <div class="col-md-3 mb-3">
-            <div class="card shadow text-center border-info">
-                <div class="card-body">
-                    <h1 class="text-info">{{ total_courses }}</h1>
-                    <p class="text-muted mb-0">Total Courses</p>
-                </div>
+    <div class="col-6 col-md-3">
+        <a href="{% url 'admin_application_list' %}?status=pending" style="text-decoration:none;">
+            <div class="stat-card" style="border-left-color: #f0ad4e;">
+                <div class="number" style="color:#f0ad4e;">{{ pending }}</div>
+                <div class="label">Pending</div>
             </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="card shadow text-center border-success">
-                <div class="card-body">
-                    <h1 class="text-success">{{ open_courses }}</h1>
-                    <p class="text-muted mb-0">Open Courses</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="card shadow text-center">
-                <div class="card-body">
-                    <h1>📋</h1>
-                    <a href="{% url 'admin_application_list' %}" class="btn btn-warning w-100">View Applications</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="card shadow text-center">
-                <div class="card-body">
-                    <h1>📚</h1>
-                    <a href="{% url 'course_list' %}" class="btn btn-primary w-100">Manage Courses</a>
-                </div>
-            </div>
-        </div>
+        </a>
     </div>
-
+    <div class="col-6 col-md-3">
+        <a href="{% url 'admin_application_list' %}?status=approved" style="text-decoration:none;">
+            <div class="stat-card" style="border-left-color: #5cb85c;">
+                <div class="number" style="color:#5cb85c;">{{ approved }}</div>
+                <div class="label">Approved</div>
+            </div>
+        </a>
+    </div>
+    <div class="col-6 col-md-3">
+        <a href="{% url 'admin_application_list' %}?status=rejected" style="text-decoration:none;">
+            <div class="stat-card" style="border-left-color: #d9534f;">
+                <div class="number" style="color:#d9534f;">{{ rejected }}</div>
+                <div class="label">Rejected</div>
+            </div>
+        </a>
+    </div>
+</div>
+<!-- Stats Row 2 — Courses -->
+<!-- Stats Row 2 — Courses -->
+<div class="row mb-4">
+    <div class="col-6 col-md-3">
+        <a href="{% url 'course_list' %}" style="text-decoration:none;">
+            <div class="stat-card">
+                <div class="number">{{ total_courses }}</div>
+                <div class="label">Total Courses</div>
+            </div>
+        </a>
+    </div>
+    <div class="col-6 col-md-3">
+        <a href="{% url 'course_list' %}?status=open" style="text-decoration:none;">
+            <div class="stat-card" style="border-left-color: #5cb85c;">
+                <div class="number" style="color:#5cb85c;">{{ open_courses }}</div>
+                <div class="label">Open Courses</div>
+            </div>
+        </a>
+    </div>
+    <div class="col-6 col-md-3">
+        <a href="{% url 'admin_application_list' %}" style="text-decoration:none;">
+            <div class="stat-card">
+                <div class="number" style="font-size:22px;">📋</div>
+                <div class="label">View Applications</div>
+            </div>
+        </a>
+    </div>
+    <div class="col-6 col-md-3">
+        <a href="{% url 'course_list' %}" style="text-decoration:none;">
+            <div class="stat-card">
+                <div class="number" style="font-size:22px;">📚</div>
+                <div class="label">Manage Courses</div>
+            </div>
+        </a>
+    </div>
+</div>
     <!-- Course wise seat occupancy -->
     <div class="card shadow">
-        <div class="card-body">
-            <h5 class="mb-3">Course-wise Seat Occupancy</h5>
-            <table class="table table-bordered table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Course</th>
-                        <th>Total Seats</th>
-                        <th>Filled</th>
-                        <th>Available</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for course in courses %}
-                    <tr>
-                        <td>{{ course.title }}</td>
-                        <td>{{ course.total_seats }}</td>
-                        <td>{{ course.seats_filled }}</td>
-                        <td>{{ course.seats_available }}</td>
-                        <td>
-                            {% if course.is_closed %}
-                                <span class="badge bg-danger">Closed</span>
-                            {% elif not course.is_visible %}
-                                <span class="badge bg-secondary">Hidden</span>
-                            {% else %}
-                                <span class="badge bg-success">Open</span>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div style="background-color:#800000; color:white; padding:10px 15px; font-weight:bold; font-size:14px;">
+            <i class="bi bi-table"></i> Course-wise Seat Occupancy
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Course</th>
+                            <th class="text-center">Total</th>
+                            <th class="text-center">Filled</th>
+                            <th class="text-center">Available</th>
+                            <th class="text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for course in courses %}
+                        <tr>
+                            <td>{{ course.title }}</td>
+                            <td class="text-center">{{ course.total_seats }}</td>
+                            <td class="text-center">{{ course.seats_filled }}</td>
+                            <td class="text-center">{{ course.seats_available }}</td>
+                            <td class="text-center">
+                                {% if course.is_closed %}
+                                    <span class="badge bg-danger">Closed</span>
+                                {% elif not course.is_visible %}
+                                    <span class="badge bg-secondary">Hidden</span>
+                                {% else %}
+                                    <span class="badge bg-success">Open</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+
 </div>
 {% endblock %}

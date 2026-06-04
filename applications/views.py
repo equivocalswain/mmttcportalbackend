@@ -3,6 +3,8 @@ from django.contrib import messages
 from .models import Application
 from .forms import ApplicationForm
 from courses.models import Course
+from django.core.mail import send_mail
+from django.conf import settings
 
 def apply_course(request, course_pk):
     if not request.user.is_authenticated:
@@ -75,10 +77,18 @@ def upload_hod_form(request, pk):
 
 
 def admin_application_list(request):
-    if not request.user.is_authenticated or not request.user.is_superuser and request.user.role != 'admin':
+    if not request.user.is_authenticated:
         return redirect('login')
+    
     applications = Application.objects.all().order_by('-submitted_at')
-    return render(request, 'applications/admin_application_list.html', {'applications': applications})
+    status = request.GET.get('status')
+    if status in ['pending', 'approved', 'rejected']:
+        applications = applications.filter(status=status)
+
+    return render(request, 'applications/admin_application_list.html', {
+        'applications': applications,
+        'current_status': status
+    })
 
 
 def admin_application_detail(request, pk):
